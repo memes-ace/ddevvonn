@@ -1,0 +1,1602 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DDEVVONN GFX — Grab me, I dare you</title>
+    <meta
+      name="description"
+      content="DDEVVONN GFX. Tug the cloth, I dare you."
+    />
+    <meta property="og:title" content="DDEVVONN GFX — Grab me, I dare you" />
+    <meta
+      property="og:description"
+      content="DDEVVONN GFX. Tug the cloth, I dare you."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap"
+    />
+    <style>
+      :root {
+        --paper: #a81e18;
+        --paper-light: #c42921;
+        --paper-edge: #7c120e;
+        --ink: #fbf4e6;
+        --ink-soft: rgba(251, 244, 230, 0.58);
+        --accent: #fbb442;
+        --white: #ffffff;
+        --gutter: clamp(20px, 3.2vw, 46px);
+        --display: clamp(44px, min(7.65vw, 13.6vh), 168px);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+
+      body {
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+
+      .hero {
+        position: relative;
+        height: 100vh;
+        height: 100svh;
+        min-height: 480px;
+        overflow: hidden;
+        isolation: isolate;
+        background: radial-gradient(
+          120% 95% at 58% 38%,
+          var(--paper-light) 0%,
+          var(--paper) 46%,
+          var(--paper-edge) 100%
+        );
+      }
+
+      .hero__cloth {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+        z-index: 0;
+        touch-action: pan-y;
+        -webkit-tap-highlight-color: transparent;
+        outline: none;
+      }
+
+      .hero__cloth.is-over {
+        cursor: grab;
+      }
+
+      .hero__cloth.is-held {
+        cursor: grabbing;
+      }
+
+      .hero__cloth:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: -6px;
+      }
+
+      .hero__still {
+        position: absolute;
+        left: 40%;
+        top: 48.5%;
+        width: min(64vw, 84vh);
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        transform: translate(-50%, -50%) rotate(5deg);
+        box-shadow: -18px 40px 70px rgba(24, 4, 4, 0.42);
+        display: none;
+      }
+
+      .hero.no-cloth .hero__still {
+        display: block;
+      }
+
+      .hero.no-cloth .hero__cloth {
+        display: none;
+      }
+
+      .nav {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px var(--gutter) 0;
+        pointer-events: none;
+        animation: rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+      }
+
+      .nav > * {
+        pointer-events: auto;
+      }
+
+      .nav__logo {
+        font-size: 19px;
+        font-weight: 500;
+        letter-spacing: -0.045em;
+        line-height: 36px;
+        color: var(--ink);
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .nav__logo:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+      }
+
+      .hero__title {
+        position: absolute;
+        z-index: 1;
+        left: 66.9%;
+        top: 48.4%;
+        transform: translateY(-50%);
+        margin: 0;
+        font-size: var(--display);
+        font-weight: 500;
+        line-height: 0.99;
+        letter-spacing: -0.06em;
+        color: var(--ink);
+        white-space: nowrap;
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .hero__title span {
+        display: block;
+        animation: rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+      }
+
+      .hero__title span:nth-child(2) {
+        animation-delay: 0.08s;
+      }
+
+      .hero__title .soft {
+        color: var(--ink-soft);
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .nav,
+        .hero__title span {
+          animation: none;
+        }
+      }
+
+      @media (max-width: 1099px), (max-aspect-ratio: 5/4) {
+        :root {
+          --display: clamp(44px, min(12.4vw, 11vh), 120px);
+        }
+        .hero__title {
+          left: var(--gutter);
+          top: auto;
+          bottom: clamp(20px, 4vh, 44px);
+          transform: none;
+        }
+        .hero__still {
+          left: 50%;
+          top: 44%;
+          width: min(78vw, 60vh);
+        }
+      }
+
+      @media (max-width: 520px) {
+        .nav__logo {
+          font-size: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="hero" id="hero" aria-label="DDEVVONN GFX">
+      <canvas
+        class="hero__cloth"
+        id="cloth"
+        role="img"
+        tabindex="-1"
+        aria-label="A golden yellow cloth showing a minimalist smiling face graphic and the words DDEVVONN GFX. Grab it then tug it around."
+      ></canvas>
+      <img
+        class="hero__still"
+        id="still"
+        alt=""
+        decoding="async"
+        src="/assets/aistudio/image_123650291_6d7c2613.JPG"
+      />
+      <header class="nav">
+        <a class="nav__logo" href="#hero">DDEVVONN GFX</a>
+      </header>
+      <h1 class="hero__title">
+        <span>Grab me</span><span class="soft">I dare you</span>
+      </h1>
+    </section>
+
+    <script>
+      (function () {
+        "use strict";
+
+        const IMG_URL = "/assets/aistudio/image_123650291_6d7c2613.JPG";
+
+        const hero = document.getElementById("hero");
+        const canvas = document.getElementById("cloth");
+
+        function failToFallback() {
+          hero.classList.add("no-cloth");
+          stopLoop();
+        }
+
+        const gl = canvas.getContext("webgl", {
+          alpha: true,
+          antialias: true,
+          premultipliedAlpha: true,
+          powerPreference: "high-performance",
+        });
+
+        if (!gl) {
+          hero.classList.add("no-cloth");
+          return;
+        }
+
+        // Simulation settings
+        const SIZE = 0.9;
+        const ASPECT = 1.12;
+        const SPREAD = 0.98;
+        const PIN_ROLL_DEG = 5.5;
+        const FLUTTER = 0.35;
+        const DAMPING = 0.3;
+        const STIFFNESS = 0.6;
+        const CRUMPLE = 0.55;
+        const GRAB_RADIUS = 0.12;
+        const CARRY_RADIUS = 0.2;
+        const GRAVITY = 2.6;
+        const TILT_DEG = -10;
+        const TURN_DEG = -12;
+        const PERSPECTIVE = 0.45;
+        const MAX_SPEED = 12;
+        const STEPS = 8;
+
+        const COLS = 46;
+        const ROWS = 42;
+        const COUNT = COLS * ROWS;
+        const CH = SIZE;
+        const CW = SIZE * ASPECT;
+
+        // Camera matrices
+        const DEG2RAD = Math.PI / 180;
+        const tilt = TILT_DEG * DEG2RAD;
+        const turn = TURN_DEG * DEG2RAD;
+
+        const cosT = Math.cos(tilt);
+        const sinT = Math.sin(tilt);
+        const cosR = Math.cos(turn);
+        const sinR = Math.sin(turn);
+
+        // World-to-view rows
+        const R0x = cosR,
+          R0y = 0,
+          R0z = sinR;
+        const R1x = sinT * sinR,
+          R1y = cosT,
+          R1z = -sinT * cosR;
+        const R2x = -cosT * sinR,
+          R2y = sinT,
+          R2z = cosT * cosR;
+
+        const CAM = Math.exp(
+          Math.log(18) * (1 - PERSPECTIVE) + Math.log(1.7) * PERSPECTIVE
+        );
+
+        // View parameters
+        let heroWidth = 1280;
+        let heroHeight = 724;
+        let aspectRatio = heroWidth / heroHeight;
+        let cx = 0.402;
+        let cy = 0.485;
+        let zoom = 1;
+
+        // Motion preference
+        const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+        let reducedMotion = motionQuery.matches;
+        if (motionQuery.addEventListener) {
+          motionQuery.addEventListener("change", function (e) {
+            reducedMotion = e.matches;
+          });
+        } else if (motionQuery.addListener) {
+          motionQuery.addListener(function (e) {
+            reducedMotion = e.matches;
+          });
+        }
+
+        // Point buffers
+        const posX = new Float32Array(COUNT);
+        const posY = new Float32Array(COUNT);
+        const posZ = new Float32Array(COUNT);
+        const prevX = new Float32Array(COUNT);
+        const prevY = new Float32Array(COUNT);
+        const prevZ = new Float32Array(COUNT);
+        const flatX = new Float32Array(COUNT);
+        const flatY = new Float32Array(COUNT);
+        const restX = new Float32Array(COUNT);
+        const restY = new Float32Array(COUNT);
+        const restZ = new Float32Array(COUNT);
+        const uCoord = new Float32Array(COUNT);
+        const vCoord = new Float32Array(COUNT);
+        const tetherL = new Float32Array(COUNT);
+        const tetherR = new Float32Array(COUNT);
+        const carryWeight = new Float32Array(COUNT);
+        const isFixed = new Uint8Array(COUNT);
+
+        // GPU vertex buffers
+        const positions = new Float32Array(COUNT * 3);
+        const normals = new Float32Array(COUNT * 3);
+        const uvs = new Float32Array(COUNT * 2);
+
+        function ridge(x) {
+          const s = Math.sin(x);
+          return Math.sqrt(s * s + 0.03) - 0.64;
+        }
+
+        function crease(u, v) {
+          return (
+            CRUMPLE *
+            0.045 *
+            CH *
+            (ridge(2.7 * u + 2.9 * v + 0.7) +
+              0.8 * ridge(-2.6 * u + 3.3 * v + 2.1) +
+              0.5 * Math.sin(4.9 * u - 1.4 * v + 2.2) +
+              0.55 * ridge(1.1 * u + 6.4 * v + 1.3) +
+              0.4 * ridge(8.3 * u + 3.9 * v + 0.2) +
+              0.3 * ridge(-5.7 * u + 9.1 * v + 1.6))
+          );
+        }
+
+        const pinL = (ROWS - 1) * COLS;
+        const pinR = ROWS * COLS - 1;
+
+        const halfSpread = 0.5 * CW * SPREAD;
+        const topY = 0.5 * CH;
+        const roll = PIN_ROLL_DEG * DEG2RAD;
+        const cosRoll = Math.cos(roll);
+        const sinRoll = Math.sin(roll);
+
+        const pinLx = -halfSpread * cosRoll;
+        const pinLy = topY + halfSpread * sinRoll;
+        const pinLz = 0;
+
+        const pinRx = halfSpread * cosRoll;
+        const pinRy = topY - halfSpread * sinRoll;
+        const pinRz = 0;
+
+        for (let r = 0; r < ROWS; r++) {
+          const v = r / (ROWS - 1);
+          for (let c = 0; c < COLS; c++) {
+            const u = c / (COLS - 1);
+            const i = r * COLS + c;
+
+            uCoord[i] = u;
+            vCoord[i] = v;
+
+            const fx = (u - 0.5) * CW;
+            const fy = (v - 0.5) * CH;
+            const fz = crease(u, v);
+
+            flatX[i] = fx;
+            flatY[i] = fy;
+            restX[i] = fx;
+            restY[i] = fy;
+            restZ[i] = fz;
+
+            tetherL[i] = 1.02 * Math.hypot(fx - -0.5 * CW, fy - 0.5 * CH);
+            tetherR[i] = 1.02 * Math.hypot(fx - 0.5 * CW, fy - 0.5 * CH);
+
+            // Starting pose
+            const oneMinusV = 1 - v;
+            const sx = fx * (SPREAD + (1 - SPREAD) * oneMinusV * oneMinusV);
+            const dy = fy - topY;
+            const rx = sx * cosRoll + dy * sinRoll;
+            const ry = topY - sx * sinRoll + dy * cosRoll;
+
+            posX[i] = prevX[i] = rx;
+            posY[i] = prevY[i] = ry;
+            posZ[i] = prevZ[i] = fz;
+
+            uvs[i * 2] = c / (COLS - 1);
+            uvs[i * 2 + 1] = 1 - r / (ROWS - 1);
+          }
+        }
+
+        // Exact pin positions
+        posX[pinL] = prevX[pinL] = pinLx;
+        posY[pinL] = prevY[pinL] = pinLy;
+        posZ[pinL] = prevZ[pinL] = pinLz;
+
+        posX[pinR] = prevX[pinR] = pinRx;
+        posY[pinR] = prevY[pinR] = pinRy;
+        posZ[pinR] = prevZ[pinR] = pinRz;
+
+        // Build links
+        const linkA = [];
+        const linkB = [];
+        const linkRest = [];
+        const linkK = [];
+
+        function addLink(c1, r1, c2, r2, k) {
+          const a = r1 * COLS + c1;
+          const b = r2 * COLS + c2;
+          const dx = restX[b] - restX[a];
+          const dy = restY[b] - restY[a];
+          const dz = restZ[b] - restZ[a];
+          linkA.push(a);
+          linkB.push(b);
+          linkRest.push(Math.hypot(dx, dy, dz));
+          linkK.push(k);
+        }
+
+        const bend = 0.02 + (0.6 - 0.02) * STIFFNESS;
+
+        for (let r = 0; r < ROWS; r++) {
+          for (let c = 0; c < COLS; c++) {
+            // Neighbours right and up
+            if (c + 1 < COLS) addLink(c, r, c + 1, r, 1.0);
+            if (r + 1 < ROWS) addLink(c, r, c, r + 1, 1.0);
+            // Both diagonals
+            if (c + 1 < COLS && r + 1 < ROWS) {
+              addLink(c, r, c + 1, r + 1, 0.5);
+              addLink(c + 1, r, c, r + 1, 0.5);
+            }
+            // Two apart
+            if (c + 2 < COLS) addLink(c, r, c + 2, r, bend);
+            if (r + 2 < ROWS) addLink(c, r, c, r + 2, bend);
+            // Five apart
+            if (c + 5 < COLS) addLink(c, r, c + 5, r, bend * 0.5);
+            if (r + 5 < ROWS) addLink(c, r, c, r + 5, bend * 0.5);
+          }
+        }
+
+        const linkCount = linkA.length;
+        const linkAArr = new Uint16Array(linkA);
+        const linkBArr = new Uint16Array(linkB);
+        const linkRestArr = new Float32Array(linkRest);
+        const linkKArr = new Float32Array(linkK);
+
+        // Build triangle indices
+        const triCount = (COLS - 1) * (ROWS - 1) * 2;
+        const indices = new Uint16Array(triCount * 3);
+        let ptr = 0;
+        for (let r = 0; r < ROWS - 1; r++) {
+          for (let c = 0; c < COLS - 1; c++) {
+            const i0 = r * COLS + c;
+            const i1 = i0 + 1;
+            const i2 = i0 + COLS;
+            const i3 = i2 + 1;
+            indices[ptr++] = i0;
+            indices[ptr++] = i1;
+            indices[ptr++] = i2;
+            indices[ptr++] = i1;
+            indices[ptr++] = i3;
+            indices[ptr++] = i2;
+          }
+        }
+
+        // Grabbing state
+        let activePointerId = null;
+        let grabIdx = -1;
+        let grabDepth = 0;
+        let grabOffsetX = 0;
+        let grabOffsetY = 0;
+        let ptrScreenX = 0;
+        let ptrScreenY = 0;
+
+        function clampToTethers(i, x, y, z) {
+          let dx = x - pinLx;
+          let dy = y - pinLy;
+          let dz = z - pinLz;
+          let d = Math.hypot(dx, dy, dz);
+          const maxL = tetherL[i];
+          if (d > maxL && d > 1e-8) {
+            const s = maxL / d;
+            x = pinLx + dx * s;
+            y = pinLy + dy * s;
+            z = pinLz + dz * s;
+          }
+
+          dx = x - pinRx;
+          dy = y - pinRy;
+          dz = z - pinRz;
+          d = Math.hypot(dx, dy, dz);
+          const maxR = tetherR[i];
+          if (d > maxR && d > 1e-8) {
+            const s = maxR / d;
+            x = pinRx + dx * s;
+            y = pinRy + dy * s;
+            z = pinRz + dz * s;
+          }
+
+          return [x, y, z];
+        }
+
+        // Physics sub-step
+        let simTime = 0;
+        let sweepDir = 0;
+
+        function stepPhysics(h, dampParam) {
+          simTime += h;
+          const damp = Math.exp(-(0.15 + 5.85 * dampParam) * h);
+          const gust =
+            0.6 + 0.4 * Math.sin(0.37 * simTime) * Math.sin(0.23 * simTime + 1.0);
+          const wind = reducedMotion ? 0 : FLUTTER * 2.4 * gust * (GRAVITY / 2.6);
+          const h2 = h * h;
+          const maxStep = MAX_SPEED * h;
+
+          isFixed.fill(0);
+          isFixed[pinL] = 1;
+          isFixed[pinR] = 1;
+
+          if (grabIdx >= 0) {
+            const sx = ptrScreenX + grabOffsetX;
+            const sy = ptrScreenY + grabOffsetY;
+            const scale = CAM / Math.max(CAM - grabDepth, 0.001);
+            const qx = sx / scale;
+            const qy = sy / scale;
+            const qz = grabDepth;
+
+            // Rotate back to world space: p = R^T * q
+            let tx = R0x * qx + R1x * qy + R2x * qz;
+            let ty = R0y * qx + R1y * qy + R2y * qz;
+            let tz = R0z * qx + R1z * qy + R2z * qz;
+
+            // Clamp by the two tethers of the grabbed point
+            const clamped = clampToTethers(grabIdx, tx, ty, tz);
+            tx = clamped[0];
+            ty = clamped[1];
+            tz = clamped[2];
+
+            const delX = tx - posX[grabIdx];
+            const delY = ty - posY[grabIdx];
+            const delZ = tz - posZ[grabIdx];
+
+            for (let i = 0; i < COUNT; i++) {
+              if (i === pinL || i === pinR) continue;
+              const w = carryWeight[i];
+              if (w <= 0) continue;
+              if (w >= 0.98) {
+                posX[i] += delX;
+                posY[i] += delY;
+                posZ[i] += delZ;
+                prevX[i] = posX[i];
+                prevY[i] = posY[i];
+                prevZ[i] = posZ[i];
+                isFixed[i] = 1;
+              } else {
+                const wx = w * delX;
+                const wy = w * delY;
+                const wz = w * delZ;
+                posX[i] += wx;
+                posY[i] += wy;
+                posZ[i] += wz;
+                prevX[i] += wx;
+                prevY[i] += wy;
+                prevZ[i] += wz;
+              }
+            }
+          }
+
+          // Verlet integration
+          for (let i = 0; i < COUNT; i++) {
+            if (isFixed[i]) continue;
+
+            const u = uCoord[i];
+            const v = vCoord[i];
+
+            const s1 = Math.sin(9.1 * u - 3.7 * v + 3.1 * simTime);
+            const s2 = Math.sin(6.3 * u + 7.9 * v - 2.3 * simTime + 1.3);
+            const s3 =
+              Math.sin(2.9 * u + 1.7 * simTime + 0.8 * Math.sin(0.5 * simTime)) *
+              Math.cos(2.3 * v - 0.9 * simTime);
+
+            const ax = wind * 0.25 * Math.sin(3.3 * v + 1.1 * simTime + u);
+            const ay = wind * 0.1 * s2 - GRAVITY;
+            const az = wind * (0.45 * s1 + 0.35 * s2 + 0.3 * s3);
+
+            const x = posX[i];
+            const y = posY[i];
+            const z = posZ[i];
+
+            let vx = (x - prevX[i]) * damp + ax * h2;
+            let vy = (y - prevY[i]) * damp + ay * h2;
+            let vz = (z - prevZ[i]) * damp + az * h2;
+
+            const sp = Math.hypot(vx, vy, vz);
+            if (sp > maxStep) {
+              const s = maxStep / sp;
+              vx *= s;
+              vy *= s;
+              vz *= s;
+            }
+
+            prevX[i] = x;
+            prevY[i] = y;
+            prevZ[i] = z;
+
+            posX[i] = x + vx;
+            posY[i] = y + vy;
+            posZ[i] = z + vz;
+          }
+
+          // Link sweep (alternating direction)
+          if (sweepDir === 0) {
+            for (let l = 0; l < linkCount; l++) {
+              const a = linkAArr[l];
+              const b = linkBArr[l];
+              const wA = isFixed[a] ? 0 : 1;
+              const wB = isFixed[b] ? 0 : 1;
+              const wSum = wA + wB;
+              if (wSum === 0) continue;
+
+              const dx = posX[b] - posX[a];
+              const dy = posY[b] - posY[a];
+              const dz = posZ[b] - posZ[a];
+              const dist = Math.hypot(dx, dy, dz);
+              if (dist < 1e-8) continue;
+
+              const f = ((dist - linkRestArr[l]) / dist) * (linkKArr[l] / wSum);
+              if (wA) {
+                posX[a] += dx * f;
+                posY[a] += dy * f;
+                posZ[a] += dz * f;
+              }
+              if (wB) {
+                posX[b] -= dx * f;
+                posY[b] -= dy * f;
+                posZ[b] -= dz * f;
+              }
+            }
+          } else {
+            for (let l = linkCount - 1; l >= 0; l--) {
+              const a = linkAArr[l];
+              const b = linkBArr[l];
+              const wA = isFixed[a] ? 0 : 1;
+              const wB = isFixed[b] ? 0 : 1;
+              const wSum = wA + wB;
+              if (wSum === 0) continue;
+
+              const dx = posX[b] - posX[a];
+              const dy = posY[b] - posY[a];
+              const dz = posZ[b] - posZ[a];
+              const dist = Math.hypot(dx, dy, dz);
+              if (dist < 1e-8) continue;
+
+              const f = ((dist - linkRestArr[l]) / dist) * (linkKArr[l] / wSum);
+              if (wA) {
+                posX[a] += dx * f;
+                posY[a] += dy * f;
+                posZ[a] += dz * f;
+              }
+              if (wB) {
+                posX[b] -= dx * f;
+                posY[b] -= dy * f;
+                posZ[b] -= dz * f;
+              }
+            }
+          }
+          sweepDir ^= 1;
+
+          // Tethers
+          for (let i = 0; i < COUNT; i++) {
+            if (isFixed[i]) continue;
+            let x = posX[i];
+            let y = posY[i];
+            let z = posZ[i];
+
+            let dx = x - pinLx;
+            let dy = y - pinLy;
+            let dz = z - pinLz;
+            let d = Math.hypot(dx, dy, dz);
+            const maxL = tetherL[i];
+            if (d > maxL && d > 1e-8) {
+              const s = maxL / d;
+              x = pinLx + dx * s;
+              y = pinLy + dy * s;
+              z = pinLz + dz * s;
+            }
+
+            dx = x - pinRx;
+            dy = y - pinRy;
+            dz = z - pinRz;
+            d = Math.hypot(dx, dy, dz);
+            const maxR = tetherR[i];
+            if (d > maxR && d > 1e-8) {
+              const s = maxR / d;
+              x = pinRx + dx * s;
+              y = pinRy + dy * s;
+              z = pinRz + dz * s;
+            }
+
+            posX[i] = x;
+            posY[i] = y;
+            posZ[i] = z;
+          }
+        }
+
+        // Pre-settle: 360 sub-steps of 1/240 s with damping = 1
+        for (let i = 0; i < 360; i++) {
+          stepPhysics(1 / 240, 1.0);
+        }
+
+        // WebGL shaders and programs
+        function compileShader(type, source) {
+          const sh = gl.createShader(type);
+          if (!sh) return null;
+          gl.shaderSource(sh, source);
+          gl.compileShader(sh);
+          if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
+            gl.deleteShader(sh);
+            return null;
+          }
+          return sh;
+        }
+
+        function createProgram(vsSource, fsSource) {
+          const vs = compileShader(gl.VERTEX_SHADER, vsSource);
+          const fs = compileShader(gl.FRAGMENT_SHADER, fsSource);
+          if (!vs || !fs) return null;
+          const prog = gl.createProgram();
+          if (!prog) return null;
+          gl.attachShader(prog, vs);
+          gl.attachShader(prog, fs);
+          gl.linkProgram(prog);
+          gl.deleteShader(vs);
+          gl.deleteShader(fs);
+          if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+            gl.deleteProgram(prog);
+            return null;
+          }
+          return prog;
+        }
+
+        const CLOTH_VS = `
+          precision highp float;
+          attribute vec3 a_pos;
+          attribute vec3 a_normal;
+          attribute vec2 a_uv;
+
+          uniform mat3 u_rot;
+          uniform float u_cam;
+          uniform float u_zoom;
+          uniform float u_aspect;
+          uniform vec2 u_center;
+
+          varying vec3 v_viewPos;
+          varying vec3 v_normal;
+          varying vec2 v_uv;
+
+          void main() {
+            vec3 q = u_rot * a_pos;
+            float scale = u_cam / max(u_cam - q.z, 0.001);
+            vec2 screen = q.xy * scale * u_zoom;
+            gl_Position = vec4(
+              2.0 * (u_center.x + screen.x / u_aspect) - 1.0,
+              1.0 - 2.0 * (u_center.y - screen.y),
+              -q.z * 0.5,
+              1.0
+            );
+            v_viewPos = q;
+            v_normal = u_rot * a_normal;
+            v_uv = a_uv;
+          }
+        `;
+
+        const SILHOUETTE_VS = `
+          precision highp float;
+          attribute vec3 a_pos;
+
+          uniform mat3 u_rot;
+          uniform float u_cam;
+          uniform float u_zoom;
+          uniform float u_aspect;
+          uniform vec2 u_center;
+
+          void main() {
+            vec3 q = u_rot * a_pos;
+            float scale = u_cam / max(u_cam - q.z, 0.001);
+            vec2 screen = q.xy * scale * u_zoom;
+            gl_Position = vec4(
+              2.0 * (u_center.x + screen.x / u_aspect) - 1.0,
+              1.0 - 2.0 * (u_center.y - screen.y),
+              -q.z * 0.5,
+              1.0
+            );
+          }
+        `;
+
+        const SILHOUETTE_FS = `
+          precision highp float;
+          void main() {
+            gl_FragColor = vec4(1.0);
+          }
+        `;
+
+        const SHADOW_VS = `
+          precision highp float;
+          attribute vec2 a_quad;
+          varying vec2 v_uv;
+          void main() {
+            v_uv = a_quad * 0.5 + 0.5;
+            gl_Position = vec4(a_quad, 0.0, 1.0);
+          }
+        `;
+
+        const SHADOW_FS = `
+          precision highp float;
+          uniform sampler2D u_shadow;
+          uniform vec2 u_texel;
+          uniform vec2 u_shift;
+          uniform float u_tapScale;
+          varying vec2 v_uv;
+
+          void main() {
+            vec2 baseUv = v_uv - u_shift;
+            vec2 tap = u_texel * u_tapScale;
+            float sum = 0.0;
+            float wSum = 0.0;
+            for (int iy = -3; iy <= 3; iy++) {
+              for (int ix = -3; ix <= 3; ix++) {
+                float d2 = float(ix * ix + iy * iy);
+                float w = exp(-d2 / 6.0);
+                vec2 suv = baseUv + vec2(float(ix), float(iy)) * tap;
+                float s = (suv.x >= 0.0 && suv.x <= 1.0 && suv.y >= 0.0 && suv.y <= 1.0)
+                  ? texture2D(u_shadow, suv).r
+                  : 0.0;
+                sum += s * w;
+                wSum += w;
+              }
+            }
+            float a = (sum / wSum) * 0.42;
+            gl_FragColor = vec4(vec3(0.06, 0.01, 0.01) * a, a);
+          }
+        `;
+
+        const CLOTH_FS = `
+          precision highp float;
+          uniform sampler2D u_tex;
+          uniform float u_hasTex;
+          uniform float u_cam;
+
+          varying vec3 v_viewPos;
+          varying vec3 v_normal;
+          varying vec2 v_uv;
+
+          float box(vec3 dir, vec3 centre, vec2 halfSize, float soft) {
+            vec3 refUp = abs(centre.y) < 0.99 ? vec3(0.0, 1.0, 0.0) : vec3(1.0, 0.0, 0.0);
+            vec3 right = normalize(cross(refUp, centre));
+            vec3 up = cross(centre, right);
+            vec2 p = vec2(dot(dir, right), dot(dir, up));
+            vec2 edge = smoothstep(-0.5, 0.5, (halfSize - abs(p)) / soft);
+            return edge.x * edge.y * smoothstep(-0.1, 0.15, dot(dir, centre));
+          }
+
+          void main() {
+            vec3 n = normalize(v_normal);
+            bool back = n.z < 0.0;
+            if (back) n = -n;
+
+            vec3 V = normalize(vec3(0.0, 0.0, u_cam) - v_viewPos);
+            vec3 Rf = reflect(-V, n);
+            vec3 KEY = normalize(vec3(-0.42, 0.45, 0.79));
+
+            float nv = clamp(dot(n, V), 0.0, 1.0);
+            float nl = max(dot(n, KEY), 0.0);
+
+            vec3 printCol = u_hasTex > 0.5
+              ? pow(max(texture2D(u_tex, v_uv).rgb, 0.0), vec3(2.2))
+              : vec3(0.966, 0.464, 0.051);
+
+            float shade = 0.48 + 0.66 * nl + 0.08 * n.y;
+            float key = pow(max(dot(Rf, KEY), 0.0), 26.0);
+
+            float strip = box(Rf, normalize(vec3(0.08, 0.93, 0.36)), vec2(1.1, 0.07), 0.22);
+            float side = box(Rf, normalize(vec3(0.86, 0.12, 0.50)), vec2(0.06, 0.85), 0.20);
+            float fill = box(Rf, KEY, vec2(0.42, 0.30), 0.35);
+
+            float phase = 3.0 * (
+              0.85 * dot(n.xy, vec2(0.6, 0.8)) +
+              0.75 * (1.0 - nv) +
+              0.3 * dot(Rf.xy, vec2(-0.8, 0.6))
+            ) + 0.4 * sin(5.0 * v_uv.x + 7.0 * v_uv.y);
+
+            vec3 rb = clamp(
+              vec3(0.96, 0.82, 0.56) +
+              vec3(0.08, 0.12, 0.16) * cos(6.28318530718 * (phase + vec3(0.0, 0.22, 0.48))),
+              0.0,
+              1.0
+            );
+            vec3 holo = mix(vec3(1.0), pow(rb, vec3(2.2)), 0.55);
+
+            float lum = dot(printCol, vec3(0.2126, 0.7152, 0.0722));
+            float gloss = mix(1.0, 0.50, smoothstep(0.55, 0.9, lum));
+
+            vec3 spec = holo * gloss * mix(vec3(1.0), printCol * 2.0 + 0.08, 0.55) *
+              (0.32 * key + 0.10 * strip + 0.07 * side + 0.02 * fill);
+
+            vec3 colour = printCol * shade + spec + holo * printCol * 0.45 * pow(1.0 - nv, 3.0);
+
+            if (back) {
+              vec3 foil = vec3(0.54, 0.32, 0.07) * (0.42 + 0.85 * nl) + spec * 1.1;
+              colour = mix(foil, printCol * shade, 0.38);
+            }
+
+            colour = min(colour, 0.8) + 0.2 * (1.0 - exp(-max(colour - 0.8, 0.0) / 0.2));
+            gl_FragColor = vec4(pow(max(colour, 0.0), vec3(1.0 / 2.2)), 1.0);
+          }
+        `;
+
+        const clothProg = createProgram(CLOTH_VS, CLOTH_FS);
+        const silProg = createProgram(SILHOUETTE_VS, SILHOUETTE_FS);
+        const shadowProg = createProgram(SHADOW_VS, SHADOW_FS);
+
+        if (!clothProg || !silProg || !shadowProg) {
+          failToFallback();
+          return;
+        }
+
+        // Uniform & attribute locations
+        const clothLoc = {
+          pos: gl.getAttribLocation(clothProg, "a_pos"),
+          normal: gl.getAttribLocation(clothProg, "a_normal"),
+          uv: gl.getAttribLocation(clothProg, "a_uv"),
+          rot: gl.getUniformLocation(clothProg, "u_rot"),
+          cam: gl.getUniformLocation(clothProg, "u_cam"),
+          zoom: gl.getUniformLocation(clothProg, "u_zoom"),
+          aspect: gl.getUniformLocation(clothProg, "u_aspect"),
+          center: gl.getUniformLocation(clothProg, "u_center"),
+          tex: gl.getUniformLocation(clothProg, "u_tex"),
+          hasTex: gl.getUniformLocation(clothProg, "u_hasTex"),
+        };
+
+        const silLoc = {
+          pos: gl.getAttribLocation(silProg, "a_pos"),
+          rot: gl.getUniformLocation(silProg, "u_rot"),
+          cam: gl.getUniformLocation(silProg, "u_cam"),
+          zoom: gl.getUniformLocation(silProg, "u_zoom"),
+          aspect: gl.getUniformLocation(silProg, "u_aspect"),
+          center: gl.getUniformLocation(silProg, "u_center"),
+        };
+
+        const shadowLoc = {
+          quad: gl.getAttribLocation(shadowProg, "a_quad"),
+          shadow: gl.getUniformLocation(shadowProg, "u_shadow"),
+          texel: gl.getUniformLocation(shadowProg, "u_texel"),
+          shift: gl.getUniformLocation(shadowProg, "u_shift"),
+          tapScale: gl.getUniformLocation(shadowProg, "u_tapScale"),
+        };
+
+        // Note: column-major mat3 for GLSL u_rot * a_pos
+        const rotMat3 = new Float32Array([
+          R0x,
+          R1x,
+          R2x,
+          R0y,
+          R1y,
+          R2y,
+          R0z,
+          R1z,
+          R2z,
+        ]);
+
+        // Buffers
+        const posBuf = gl.createBuffer();
+        const normBuf = gl.createBuffer();
+        const uvBuf = gl.createBuffer();
+        const idxBuf = gl.createBuffer();
+        const quadBuf = gl.createBuffer();
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, uvBuf);
+        gl.bufferData(gl.ARRAY_BUFFER, uvs, gl.STATIC_DRAW);
+
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, idxBuf);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+        gl.bufferData(
+          gl.ARRAY_BUFFER,
+          new Float32Array([-1, -1, 3, -1, -1, 3]),
+          gl.STATIC_DRAW
+        );
+
+        // Cloth texture
+        const clothTex = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, clothTex);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texImage2D(
+          gl.TEXTURE_2D,
+          0,
+          gl.RGBA,
+          1,
+          1,
+          0,
+          gl.RGBA,
+          gl.UNSIGNED_BYTE,
+          new Uint8Array([251, 180, 66, 255])
+        );
+
+        let hasTex = 0.0;
+
+        // Off-screen shadow framebuffer
+        const shadowFbo = gl.createFramebuffer();
+        const shadowTex = gl.createTexture();
+        let shadowW = 1;
+        let shadowH = 1;
+
+        function resizeShadowTarget() {
+          shadowW = Math.max(1, Math.round(canvas.width / 8));
+          shadowH = Math.max(1, Math.round(canvas.height / 8));
+          gl.bindTexture(gl.TEXTURE_2D, shadowTex);
+          gl.texImage2D(
+            gl.TEXTURE_2D,
+            0,
+            gl.RGBA,
+            shadowW,
+            shadowH,
+            0,
+            gl.RGBA,
+            gl.UNSIGNED_BYTE,
+            null
+          );
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+
+          gl.bindFramebuffer(gl.FRAMEBUFFER, shadowFbo);
+          gl.framebufferTexture2D(
+            gl.FRAMEBUFFER,
+            gl.COLOR_ATTACHMENT0,
+            gl.TEXTURE_2D,
+            shadowTex,
+            0
+          );
+          gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        }
+
+        function updateView() {
+          const rect = hero.getBoundingClientRect();
+          heroWidth = Math.max(1, rect.width);
+          heroHeight = Math.max(1, rect.height);
+          aspectRatio = heroWidth / heroHeight;
+
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          const pw = Math.max(1, Math.round(heroWidth * dpr));
+          const ph = Math.max(1, Math.round(heroHeight * dpr));
+
+          if (canvas.width !== pw || canvas.height !== ph) {
+            canvas.width = pw;
+            canvas.height = ph;
+            resizeShadowTarget();
+          }
+
+          if (heroWidth >= 1100 && aspectRatio >= 1.25) {
+            cx = 0.402;
+            cy = 0.485;
+            zoom = Math.min(1, (0.58 * aspectRatio) / (CW * 1.12));
+          } else {
+            cx = 0.5;
+            cy = aspectRatio < 0.75 ? 0.41 : 0.43;
+            zoom = Math.min(
+              1,
+              (0.92 * aspectRatio) / (CW * 1.12),
+              (aspectRatio < 0.75 ? 0.6 : 0.66) / CH
+            );
+          }
+        }
+
+        updateView();
+
+        function uploadMesh() {
+          for (let r = 0; r < ROWS; r++) {
+            const rLo = r > 0 ? r - 1 : 0;
+            const rHi = r < ROWS - 1 ? r + 1 : ROWS - 1;
+            for (let c = 0; c < COLS; c++) {
+              const cLo = c > 0 ? c - 1 : 0;
+              const cHi = c < COLS - 1 ? c + 1 : COLS - 1;
+              const i = r * COLS + c;
+              const o = i * 3;
+
+              positions[o] = posX[i];
+              positions[o + 1] = posY[i];
+              positions[o + 2] = posZ[i];
+
+              const iL = r * COLS + cLo;
+              const iR = r * COLS + cHi;
+              const iD = rLo * COLS + c;
+              const iU = rHi * COLS + c;
+
+              const ux = posX[iR] - posX[iL];
+              const uy = posY[iR] - posY[iL];
+              const uz = posZ[iR] - posZ[iL];
+
+              const vx = posX[iU] - posX[iD];
+              const vy = posY[iU] - posY[iD];
+              const vz = posZ[iU] - posZ[iD];
+
+              let nx = uy * vz - uz * vy;
+              let ny = uz * vx - ux * vz;
+              let nz = ux * vy - uy * vx;
+              const len = Math.hypot(nx, ny, nz) || 1;
+              normals[o] = nx / len;
+              normals[o + 1] = ny / len;
+              normals[o + 2] = nz / len;
+            }
+          }
+
+          gl.bindBuffer(gl.ARRAY_BUFFER, posBuf);
+          gl.bufferData(gl.ARRAY_BUFFER, positions, gl.DYNAMIC_DRAW);
+
+          gl.bindBuffer(gl.ARRAY_BUFFER, normBuf);
+          gl.bufferData(gl.ARRAY_BUFFER, normals, gl.DYNAMIC_DRAW);
+        }
+
+        function setEnabledAttribs(activeList) {
+          const all = [
+            clothLoc.pos,
+            clothLoc.normal,
+            clothLoc.uv,
+            silLoc.pos,
+            shadowLoc.quad,
+          ];
+          for (let i = 0; i < all.length; i++) {
+            const loc = all[i];
+            if (loc >= 0 && activeList.indexOf(loc) === -1) {
+              gl.disableVertexAttribArray(loc);
+            }
+          }
+          for (let i = 0; i < activeList.length; i++) {
+            if (activeList[i] >= 0) {
+              gl.enableVertexAttribArray(activeList[i]);
+            }
+          }
+        }
+
+        function render() {
+          uploadMesh();
+
+          // 1. Silhouette into off-screen shadow FBO
+          gl.bindFramebuffer(gl.FRAMEBUFFER, shadowFbo);
+          gl.viewport(0, 0, shadowW, shadowH);
+          gl.disable(gl.DEPTH_TEST);
+          gl.disable(gl.BLEND);
+          gl.disable(gl.CULL_FACE);
+          gl.clearColor(0, 0, 0, 0);
+          gl.clear(gl.COLOR_BUFFER_BIT);
+
+          gl.useProgram(silProg);
+          gl.uniformMatrix3fv(silLoc.rot, false, rotMat3);
+          gl.uniform1f(silLoc.cam, CAM);
+          gl.uniform1f(silLoc.zoom, zoom);
+          gl.uniform1f(silLoc.aspect, aspectRatio);
+          gl.uniform2f(silLoc.center, cx, cy);
+
+          setEnabledAttribs([silLoc.pos]);
+          gl.bindBuffer(gl.ARRAY_BUFFER, posBuf);
+          gl.vertexAttribPointer(silLoc.pos, 3, gl.FLOAT, false, 0, 0);
+
+          gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, idxBuf);
+          gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+
+          // 2. Main framebuffer: clear, shadow quad, then cloth
+          gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+          gl.viewport(0, 0, canvas.width, canvas.height);
+          gl.clearColor(0, 0, 0, 0);
+          gl.clearDepth(1.0);
+          gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+          // Shadow pass
+          gl.disable(gl.DEPTH_TEST);
+          gl.depthMask(false);
+          gl.enable(gl.BLEND);
+          gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+
+          gl.useProgram(shadowProg);
+          gl.activeTexture(gl.TEXTURE0);
+          gl.bindTexture(gl.TEXTURE_2D, shadowTex);
+          gl.uniform1i(shadowLoc.shadow, 0);
+          gl.uniform2f(shadowLoc.texel, 1 / shadowW, 1 / shadowH);
+          gl.uniform2f(
+            shadowLoc.shift,
+            (-0.012 * zoom) / aspectRatio,
+            -0.045 * zoom
+          );
+          gl.uniform1f(shadowLoc.tapScale, 0.9 + (1.5 * zoom * heroHeight) / 724);
+
+          setEnabledAttribs([shadowLoc.quad]);
+          gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+          gl.vertexAttribPointer(shadowLoc.quad, 2, gl.FLOAT, false, 0, 0);
+          gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+          // 3. Cloth pass
+          gl.enable(gl.DEPTH_TEST);
+          gl.depthFunc(gl.LEQUAL);
+          gl.depthMask(true);
+          gl.disable(gl.BLEND);
+          gl.disable(gl.CULL_FACE);
+
+          gl.useProgram(clothProg);
+          gl.uniformMatrix3fv(clothLoc.rot, false, rotMat3);
+          gl.uniform1f(clothLoc.cam, CAM);
+          gl.uniform1f(clothLoc.zoom, zoom);
+          gl.uniform1f(clothLoc.aspect, aspectRatio);
+          gl.uniform2f(clothLoc.center, cx, cy);
+          gl.uniform1f(clothLoc.hasTex, hasTex);
+
+          gl.activeTexture(gl.TEXTURE0);
+          gl.bindTexture(gl.TEXTURE_2D, clothTex);
+          gl.uniform1i(clothLoc.tex, 0);
+
+          setEnabledAttribs([clothLoc.pos, clothLoc.normal, clothLoc.uv]);
+          gl.bindBuffer(gl.ARRAY_BUFFER, posBuf);
+          gl.vertexAttribPointer(clothLoc.pos, 3, gl.FLOAT, false, 0, 0);
+
+          gl.bindBuffer(gl.ARRAY_BUFFER, normBuf);
+          gl.vertexAttribPointer(clothLoc.normal, 3, gl.FLOAT, false, 0, 0);
+
+          gl.bindBuffer(gl.ARRAY_BUFFER, uvBuf);
+          gl.vertexAttribPointer(clothLoc.uv, 2, gl.FLOAT, false, 0, 0);
+
+          gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, idxBuf);
+          gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+        }
+
+        // Pointer picking & interaction
+        function toScreen(clientX, clientY) {
+          const rect = hero.getBoundingClientRect();
+          return {
+            x: (((clientX - rect.left) / rect.width - cx) * aspectRatio) / zoom,
+            y: (cy - (clientY - rect.top) / rect.height) / zoom,
+          };
+        }
+
+        function pickPoint(clientX, clientY) {
+          const ptr = toScreen(clientX, clientY);
+          const threshold = GRAB_RADIUS / zoom;
+          let bestIdx = -1;
+          let bestScore = Infinity;
+          let bestDepth = 0;
+          let bestOffX = 0;
+          let bestOffY = 0;
+
+          for (let i = 0; i < COUNT; i++) {
+            const px = posX[i];
+            const py = posY[i];
+            const pz = posZ[i];
+
+            const qx = R0x * px + R0y * py + R0z * pz;
+            const qy = R1x * px + R1y * py + R1z * pz;
+            const qz = R2x * px + R2y * py + R2z * pz;
+
+            const scale = CAM / Math.max(CAM - qz, 0.001);
+            const sx = qx * scale;
+            const sy = qy * scale;
+
+            const dist = Math.hypot(sx - ptr.x, sy - ptr.y);
+            if (dist <= threshold) {
+              const score = dist - 0.08 * qz;
+              if (score < bestScore) {
+                bestScore = score;
+                bestIdx = i;
+                bestDepth = qz;
+                bestOffX = sx - ptr.x;
+                bestOffY = sy - ptr.y;
+              }
+            }
+          }
+
+          return {
+            idx: bestIdx,
+            depth: bestDepth,
+            offX: bestOffX,
+            offY: bestOffY,
+            ptr: ptr,
+          };
+        }
+
+        function computeCarryWeights(centerIdx) {
+          const cxFlat = flatX[centerIdx];
+          const cyFlat = flatY[centerIdx];
+          const invRadius = 1 / (CARRY_RADIUS * CH);
+
+          for (let i = 0; i < COUNT; i++) {
+            if (i === pinL || i === pinR) {
+              carryWeight[i] = 0;
+            } else if (i === centerIdx) {
+              carryWeight[i] = 1;
+            } else {
+              const d = Math.hypot(flatX[i] - cxFlat, flatY[i] - cyFlat) * invRadius;
+              if (d < 1) {
+                const t = 1 - d * d;
+                carryWeight[i] = t * t;
+              } else {
+                carryWeight[i] = 0;
+              }
+            }
+          }
+        }
+
+        function releaseGrab() {
+          activePointerId = null;
+          grabIdx = -1;
+          canvas.classList.remove("is-held");
+        }
+
+        canvas.addEventListener("pointerdown", function (e) {
+          if (e.pointerType === "mouse" && e.button !== 0) return;
+          const hit = pickPoint(e.clientX, e.clientY);
+          if (hit.idx < 0) return;
+
+          activePointerId = e.pointerId;
+          grabIdx = hit.idx;
+          grabDepth = hit.depth;
+          grabOffsetX = hit.offX;
+          grabOffsetY = hit.offY;
+          ptrScreenX = hit.ptr.x;
+          ptrScreenY = hit.ptr.y;
+          computeCarryWeights(grabIdx);
+
+          try {
+            canvas.setPointerCapture(e.pointerId);
+          } catch (_) {}
+
+          canvas.classList.remove("is-over");
+          canvas.classList.add("is-held");
+        });
+
+        canvas.addEventListener("pointermove", function (e) {
+          if (activePointerId === e.pointerId) {
+            const ptr = toScreen(e.clientX, e.clientY);
+            ptrScreenX = ptr.x;
+            ptrScreenY = ptr.y;
+            return;
+          }
+          if (e.pointerType === "mouse" && activePointerId === null) {
+            const hit = pickPoint(e.clientX, e.clientY);
+            canvas.classList.toggle("is-over", hit.idx >= 0);
+          }
+        });
+
+        canvas.addEventListener("pointerleave", function () {
+          if (activePointerId === null) {
+            canvas.classList.remove("is-over");
+          }
+        });
+
+        function handlePointerEnd(e) {
+          if (e.pointerId !== activePointerId) return;
+          releaseGrab();
+          if (e.pointerType === "mouse") {
+            const hit = pickPoint(e.clientX, e.clientY);
+            canvas.classList.toggle("is-over", hit.idx >= 0);
+          }
+        }
+
+        canvas.addEventListener("pointerup", handlePointerEnd);
+        canvas.addEventListener("pointercancel", handlePointerEnd);
+        canvas.addEventListener("lostpointercapture", function (e) {
+          if (e.pointerId === activePointerId) {
+            releaseGrab();
+          }
+        });
+
+        canvas.addEventListener(
+          "touchstart",
+          function (e) {
+            if (e.touches.length > 0) {
+              const t = e.touches[0];
+              const hit = pickPoint(t.clientX, t.clientY);
+              if (hit.idx >= 0) {
+                e.preventDefault();
+              }
+            }
+          },
+          { passive: false }
+        );
+
+        canvas.addEventListener(
+          "touchmove",
+          function (e) {
+            if (activePointerId !== null) {
+              e.preventDefault();
+            }
+          },
+          { passive: false }
+        );
+
+        // Resize handling
+        if (typeof ResizeObserver !== "undefined") {
+          const ro = new ResizeObserver(function () {
+            updateView();
+            if (!rafId) render();
+          });
+          ro.observe(hero);
+        }
+        window.addEventListener("resize", function () {
+          updateView();
+          if (!rafId) render();
+        });
+
+        // Animation loop gated by IntersectionObserver and visibilitychange
+        let rafId = 0;
+        let lastTime = 0;
+        let isOnScreen = true;
+
+        function tick(now) {
+          rafId = 0;
+          if (!isOnScreen || document.hidden || hero.classList.contains("no-cloth")) {
+            return;
+          }
+          if (!lastTime) lastTime = now;
+          const elapsed = Math.min(Math.max((now - lastTime) / 1000, 0), 1 / 30);
+          lastTime = now;
+
+          const h = elapsed > 0 ? elapsed / STEPS : 1 / 480;
+          for (let s = 0; s < STEPS; s++) {
+            stepPhysics(h, DAMPING);
+          }
+
+          render();
+          rafId = requestAnimationFrame(tick);
+        }
+
+        function startLoop() {
+          if (
+            !rafId &&
+            isOnScreen &&
+            !document.hidden &&
+            !hero.classList.contains("no-cloth")
+          ) {
+            lastTime = 0;
+            rafId = requestAnimationFrame(tick);
+          }
+        }
+
+        function stopLoop() {
+          if (rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = 0;
+          }
+          lastTime = 0;
+        }
+
+        if (typeof IntersectionObserver !== "undefined") {
+          const io = new IntersectionObserver(
+            function (entries) {
+              for (let i = 0; i < entries.length; i++) {
+                isOnScreen = entries[i].isIntersecting;
+                if (isOnScreen) startLoop();
+                else stopLoop();
+              }
+            },
+            { threshold: 0 }
+          );
+          io.observe(hero);
+        }
+
+        document.addEventListener("visibilitychange", function () {
+          if (document.hidden) stopLoop();
+          else startLoop();
+        });
+
+        canvas.addEventListener("webglcontextlost", function (e) {
+          e.preventDefault();
+          failToFallback();
+        });
+
+        // Load cloth texture image
+        const texImg = new Image();
+        texImg.onload = function () {
+          // Resample with cover crop matching cloth aspect into a power-of-two canvas for WebGL 1 mipmaps
+          const texSize = 1024;
+          const potCanvas = document.createElement("canvas");
+          potCanvas.width = texSize;
+          potCanvas.height = texSize;
+          const ctx2d = potCanvas.getContext("2d");
+          let uploadSource = texImg;
+
+          if (ctx2d && texImg.naturalWidth > 0 && texImg.naturalHeight > 0) {
+            const imgAspect = texImg.naturalWidth / texImg.naturalHeight;
+            let sx = 0;
+            let sy = 0;
+            let sw = texImg.naturalWidth;
+            let sh = texImg.naturalHeight;
+            if (imgAspect > ASPECT) {
+              sw = texImg.naturalHeight * ASPECT;
+              sx = (texImg.naturalWidth - sw) * 0.5;
+            } else {
+              sh = texImg.naturalWidth / ASPECT;
+              sy = (texImg.naturalHeight - sh) * 0.5;
+            }
+            ctx2d.imageSmoothingEnabled = true;
+            ctx2d.imageSmoothingQuality = "high";
+            ctx2d.drawImage(texImg, sx, sy, sw, sh, 0, 0, texSize, texSize);
+            uploadSource = potCanvas;
+          }
+
+          gl.bindTexture(gl.TEXTURE_2D, clothTex);
+          gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 0);
+          gl.texImage2D(
+            gl.TEXTURE_2D,
+            0,
+            gl.RGBA,
+            gl.RGBA,
+            gl.UNSIGNED_BYTE,
+            uploadSource
+          );
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+          gl.texParameteri(
+            gl.TEXTURE_2D,
+            gl.TEXTURE_MIN_FILTER,
+            gl.LINEAR_MIPMAP_LINEAR
+          );
+          gl.generateMipmap(gl.TEXTURE_2D);
+
+          const aniso =
+            gl.getExtension("EXT_texture_filter_anisotropic") ||
+            gl.getExtension("MOZ_EXT_texture_filter_anisotropic") ||
+            gl.getExtension("WEBKIT_EXT_texture_filter_anisotropic");
+          if (aniso) {
+            const maxAniso = gl.getParameter(aniso.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+            gl.texParameterf(
+              gl.TEXTURE_2D,
+              aniso.TEXTURE_MAX_ANISOTROPY_EXT,
+              Math.min(8, maxAniso)
+            );
+          }
+
+          hasTex = 1.0;
+          render();
+        };
+        texImg.onerror = function () {
+          failToFallback();
+        };
+        texImg.src = IMG_URL;
+
+        render();
+        startLoop();
+      })();
+    </script>
+  </body>
+</html>
